@@ -7,8 +7,16 @@ import {
 } from '@remix-run/react';
 import type { FunctionComponent } from 'react';
 
-import { getContact, type ContactRecord } from '../data.server';
-import { json, type LoaderFunctionArgs } from '@remix-run/node';
+import {
+    getContact,
+    updateContactById,
+    type ContactRecord,
+} from '../data.server';
+import {
+    type ActionFunctionArgs,
+    json,
+    type LoaderFunctionArgs,
+} from '@remix-run/node';
 import invariant from 'tiny-invariant';
 
 export async function loader({ params }: LoaderFunctionArgs) {
@@ -22,6 +30,15 @@ export async function loader({ params }: LoaderFunctionArgs) {
     }
 
     return json(contact);
+}
+
+export async function action({ params, request }: ActionFunctionArgs) {
+    invariant(params.contactId, 'Missing contactId param');
+    const formData = await request.formData();
+
+    return updateContactById(params.contactId, {
+        favorite: formData.get('favorite') === 'true',
+    });
 }
 
 export function ErrorBoundary() {

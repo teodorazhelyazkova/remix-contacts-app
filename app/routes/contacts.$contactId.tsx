@@ -59,7 +59,7 @@ export default function Contact() {
                     </Form>
 
                     <Form
-                        action="destroy"
+                        action="delete"
                         method="post"
                         onSubmit={(event) => {
                             const response = confirm(

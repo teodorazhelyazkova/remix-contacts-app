@@ -84,7 +84,21 @@ export async function updateContactById(id: string, updates: ContactMutation) {
     }
 }
 
-export async function deleteContact(id: string) {}
+export async function deleteContact(id: string) {
+    try {
+        const response = await fetch(STRAPI_URL + '/api/contacts/' + id, {
+            method: 'DELETE',
+        });
+        const data = await response.json();
+        const flattenContactsAttributesData = flattenContactsAttributes(
+            data.data
+        );
+
+        return flattenContactsAttributesData;
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 const data = [
     {

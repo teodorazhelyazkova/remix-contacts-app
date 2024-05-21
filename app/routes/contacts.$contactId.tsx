@@ -1,7 +1,7 @@
 import { Form, useLoaderData } from '@remix-run/react';
 import type { FunctionComponent } from 'react';
 
-import { getContact, type ContactRecord } from '../data';
+import { getContact, type ContactRecord } from '../data.server';
 import { json, type LoaderFunctionArgs } from '@remix-run/node';
 import invariant from 'tiny-invariant';
 

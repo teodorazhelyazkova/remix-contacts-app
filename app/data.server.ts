@@ -32,7 +32,19 @@ export async function getContacts(query?: string | null) {
 
 export async function createEmptyContact() {}
 
-export async function getContact(id: string) {}
+export async function getContact(id: string) {
+    try {
+        const response = await fetch(STRAPI_URL + '/api/contacts/' + id);
+        const data = await response.json();
+        const flattenContactsAttributesData = flattenContactsAttributes(
+            data.data
+        );
+
+        return flattenContactsAttributesData;
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 export async function updateContact(id: string, updates: ContactMutation) {}
 

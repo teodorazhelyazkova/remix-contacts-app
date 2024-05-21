@@ -64,7 +64,25 @@ export async function getContact(id: string) {
     }
 }
 
-export async function updateContact(id: string, updates: ContactMutation) {}
+export async function updateContactById(id: string, updates: ContactMutation) {
+    try {
+        const response = await fetch(STRAPI_URL + '/api/contacts/' + id, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ data: { ...updates } }),
+        });
+        const responseData = await response.json();
+        const flattenContactsAttributesData = flattenContactsAttributes(
+            responseData.data
+        );
+
+        return flattenContactsAttributesData;
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 export async function deleteContact(id: string) {}
 

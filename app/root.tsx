@@ -55,7 +55,9 @@ export default function App() {
                             />
                         </Form>
                         <Form method="post">
-                            <button type="submit">New</button>
+                            <Link to="contacts/create" className="buttonLink">
+                                Create
+                            </Link>
                         </Form>
                     </div>
                     <nav>

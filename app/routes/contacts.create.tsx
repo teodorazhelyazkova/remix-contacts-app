@@ -1,20 +1,43 @@
 import { useNavigate, useActionData, Form } from '@remix-run/react';
-import type { ActionFunctionArgs } from '@remix-run/node';
+import { type ActionFunctionArgs, json, redirect } from '@remix-run/node';
+import z from 'zod';
 import { createContact } from '~/data.server';
 
 export async function action({ request }: ActionFunctionArgs) {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
+
+    const formSchema = z.object({
+        avatar: z.string().url().min(2),
+        first: z.string().min(2),
+        last: z.string().min(2),
+        twitter: z.string().min(2),
+    });
+
+    const validatedFields = formSchema.safeParse({
+        avatar: data.avatar,
+        first: data.first,
+        last: data.last,
+        twitter: data.twitter,
+    });
+
+    if (!validatedFields.success) {
+        return json({
+            errors: validatedFields.error.flatten().fieldErrors,
+            message: 'Please fil out all missing fields.',
+            data: null,
+        });
+    }
     const newEntry = await createContact(data);
 
-    return newEntry;
+    return redirect('/contacts/' + newEntry.id);
 }
 
 export default function CreateContact() {
     const navigate = useNavigate();
-    const formData = useActionData();
+    const formData = useActionData<typeof action>();
 
-    console.log(formData);
+    console.log(formData, '--------------data from action');
 
     return (
         <Form method="post">
@@ -25,7 +48,7 @@ export default function CreateContact() {
                     type="text"
                     label="First name"
                     placeholder="First"
-                    errors={false}
+                    errors={formData?.errors}
                 />
                 <FormInput
                     aria-label="Last name"
@@ -33,14 +56,14 @@ export default function CreateContact() {
                     type="text"
                     label="Last name"
                     placeholder="Last"
-                    errors={false}
+                    errors={formData?.errors}
                 />
                 <FormInput
                     name="twitter"
                     type="text"
                     label="Twitter"
                     placeholder="@jack"
-                    errors={false}
+                    errors={formData?.errors}
                 />
                 <FormInput
                     aria-label="Avatar URL"
@@ -48,12 +71,12 @@ export default function CreateContact() {
                     type="text"
                     label="Avatar URL"
                     placeholder="https://example.com/avatar.jpg"
-                    errors={false}
+                    errors={formData?.errors}
                 />
             </div>
             <div>
                 <label>
-                    <div>Notes</div>
+                    <span>Notes</span>
                     <textarea name="note" rows={6} />
                 </label>
             </div>

@@ -1,7 +1,6 @@
 html {
     box-sizing: border-box;
 }
-
 *,
 *:before,
 *:after {
@@ -28,10 +27,9 @@ body {
     line-height: 1.5;
     color: #121212;
 }
-
 textarea,
-input,
-button {
+input {
+    width: 100%;
     font-size: 1rem;
     font-family: inherit;
     border: none;
@@ -46,9 +44,6 @@ button {
 button {
     color: #3992ff;
     font-weight: 500;
-}
-
-.buttonLink {
     font-size: 1rem;
     font-family: inherit;
     border: none;
@@ -58,9 +53,6 @@ button {
     background-color: white;
     line-height: 1.5;
     margin: 0;
-    color: #3992ff;
-    font-weight: 500;
-    text-decoration: none;
 }
 
 textarea:hover,
@@ -79,24 +71,20 @@ button:active {
     align-items: flex-start;
     gap: 1rem;
 }
-
 #contact h1 form {
     display: flex;
     align-items: center;
     margin-top: 0.25rem;
 }
-
 #contact h1 form button {
     box-shadow: none;
     font-size: 1.5rem;
     font-weight: 400;
     padding: 0;
 }
-
 #contact h1 form button[value='true'] {
     color: #a4a4a4;
 }
-
 #contact h1 form button[value='true']:hover,
 #contact h1 form button[value='false'] {
     color: #eeb004;
@@ -339,30 +327,24 @@ i {
 
 #contact-form {
     display: flex;
-    max-width: 40rem;
     flex-direction: column;
     gap: 1rem;
 }
-
 #contact-form > p:first-child {
     margin: 0;
     padding: 0;
 }
-
 #contact-form > p:first-child > :nth-child(2) {
     margin-right: 1rem;
 }
-
 #contact-form > p:first-child,
 #contact-form label {
     display: flex;
 }
-
 #contact-form p:first-child span,
 #contact-form label span {
     width: 8rem;
 }
-
 #contact-form p:first-child input,
 #contact-form label input,
 #contact-form label textarea {
@@ -421,4 +403,48 @@ i {
     align-items: center;
     justify-content: center;
     width: 100%;
+}
+
+.buttonLink {
+    font-size: 1rem;
+    font-family: inherit;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.2), 0 1px 2px hsla(0, 0%, 0%, 0.2);
+    background-color: white;
+    line-height: 1.5;
+    margin: 0;
+    color: #3992ff;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.button-group {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.input-error {
+    color: #e53e3e;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.create-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 20px;
+}
+
+.root-error {
+    background: red;
+    color: white;
+    padding: 6rem;
+}
+
+.contact-error {
+    padding: 6rem;
 }

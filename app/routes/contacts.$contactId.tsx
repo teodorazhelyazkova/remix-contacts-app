@@ -1,4 +1,10 @@
-import { Form, useLoaderData } from '@remix-run/react';
+import {
+    Form,
+    Link,
+    isRouteErrorResponse,
+    useLoaderData,
+    useRouteError,
+} from '@remix-run/react';
 import type { FunctionComponent } from 'react';
 
 import { getContact, type ContactRecord } from '../data.server';
@@ -16,6 +22,26 @@ export async function loader({ params }: LoaderFunctionArgs) {
     }
 
     return json(contact);
+}
+
+export function ErrorBoundary() {
+    const error = useRouteError();
+
+    return (
+        <div className="contact-error">
+            <h1>Your contact has left the building.</h1>
+            <p>
+                {isRouteErrorResponse(error)
+                    ? `${error.status} ${error.statusText}`
+                    : error instanceof Error
+                    ? error.message
+                    : 'Unknown Error'}
+            </p>
+            <Link to="/contacts" className="buttonLink">
+                Back to safety
+            </Link>
+        </div>
+    );
 }
 
 export default function Contact() {

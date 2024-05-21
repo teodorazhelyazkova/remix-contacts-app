@@ -8,6 +8,8 @@ import {
     Outlet,
     useLoaderData,
     Link,
+    useRouteError,
+    isRouteErrorResponse,
 } from '@remix-run/react';
 import appStylesHref from './app.css';
 import { getContacts } from './data.server';
@@ -20,6 +22,31 @@ export async function loader() {
     const contacts = await getContacts();
 
     return json(contacts);
+}
+
+export function ErrorBoundary() {
+    const error = useRouteError();
+
+    return (
+        <html lang="en">
+            <head>
+                <title>Oops!</title>
+                <Meta />
+                <Links />
+            </head>
+            <body className="root-error">
+                <h1>Oops, it is game over.</h1>
+                <p>
+                    {isRouteErrorResponse(error)
+                        ? `${error.status} ${error.statusText}`
+                        : error instanceof Error
+                        ? error.message
+                        : 'Unknown Error'}
+                </p>
+                <Scripts />
+            </body>
+        </html>
+    );
 }
 
 export default function App() {

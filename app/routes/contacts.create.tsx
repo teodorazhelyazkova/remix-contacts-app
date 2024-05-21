@@ -37,8 +37,6 @@ export default function CreateContact() {
     const navigate = useNavigate();
     const formData = useActionData<typeof action>();
 
-    console.log(formData, '--------------data from action');
-
     return (
         <Form method="post">
             <div className="create-form-grid">

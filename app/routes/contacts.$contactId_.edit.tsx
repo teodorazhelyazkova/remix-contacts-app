@@ -42,9 +42,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
 
 export default function EditContact() {
     const { contact } = useLoaderData<typeof loader>();
-    const formResponse = useActionData<typeof action>();
     const navigate = useNavigate();
-    console.log(formResponse, '-----from ACTION formResponse');
 
     return (
         <Form id="contact-form" method="post">

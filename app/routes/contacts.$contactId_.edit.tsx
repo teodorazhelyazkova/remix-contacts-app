@@ -89,8 +89,12 @@ export default function EditContact() {
                 <textarea defaultValue={contact.notes} name="notes" rows={6} />
             </label>
             <p>
-                <button type="submit">Save</button>
-                <button onClick={() => navigate(-1)}>Cancel</button>
+                <button className="buttonLink" type="submit">
+                    Save
+                </button>
+                <button className="buttonLink" onClick={() => navigate(-1)}>
+                    Cancel
+                </button>
             </p>
         </Form>
     );

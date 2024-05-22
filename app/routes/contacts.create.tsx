@@ -80,8 +80,10 @@ export default function CreateContact() {
             </div>
 
             <div className="button-group">
-                <button type="submit">Create</button>
-                <button type="button" onClick={() => navigate(-1)}>
+                <button className="buttonLink" type="submit">
+                    Create
+                </button>
+                <button className="buttonLink" onClick={() => navigate(-1)}>
                     Cancel
                 </button>
             </div>

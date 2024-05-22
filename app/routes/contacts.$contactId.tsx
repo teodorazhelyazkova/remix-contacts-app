@@ -97,7 +97,9 @@ export default function Contact() {
 
                 <div>
                     <Form action="edit">
-                        <button type="submit">Edit</button>
+                        <button className="buttonLink" type="submit">
+                            Edit
+                        </button>
                     </Form>
 
                     <Form
@@ -112,7 +114,9 @@ export default function Contact() {
                             }
                         }}
                     >
-                        <button type="submit">Delete</button>
+                        <button className="buttonLink" type="submit">
+                            Delete
+                        </button>
                     </Form>
                 </div>
             </div>
@@ -128,6 +132,7 @@ const Favorite: FunctionComponent<{
     return (
         <Form method="post">
             <button
+                className="buttonLink"
                 aria-label={
                     favorite ? 'Remove from favorites' : 'Add to favorites'
                 }

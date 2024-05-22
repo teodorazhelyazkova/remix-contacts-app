@@ -82,11 +82,6 @@ export default function App() {
                                 name="q"
                                 defaultValue={q || ''}
                             />
-                            <div
-                                id="search-spinner"
-                                aria-hidden
-                                hidden={true}
-                            />
                         </Form>
                         <Form method="post">
                             <Link to="contacts/create" className="buttonLink">

@@ -14,6 +14,7 @@ import {
     Link,
     useRouteError,
     isRouteErrorResponse,
+    NavLink,
 } from '@remix-run/react';
 import appStylesHref from './app.css';
 import { getContacts } from './data.server';
@@ -94,7 +95,12 @@ export default function App() {
                             <ul>
                                 {contacts.map((contact: any) => (
                                     <li key={contact.id}>
-                                        <Link to={`contacts/${contact.id}`}>
+                                        <NavLink
+                                            to={`contacts/${contact.id}`}
+                                            className={({ isActive }) =>
+                                                isActive ? 'active' : ''
+                                            }
+                                        >
                                             {contact.first || contact.last ? (
                                                 <>
                                                     {contact.first}{' '}
@@ -106,7 +112,7 @@ export default function App() {
                                             {contact.favorite ? (
                                                 <span>★</span>
                                             ) : null}
-                                        </Link>
+                                        </NavLink>
                                     </li>
                                 ))}
                             </ul>

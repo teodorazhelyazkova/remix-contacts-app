@@ -1,5 +1,8 @@
-import { json, type LinksFunction } from '@remix-run/node';
-import qs from 'qs';
+import {
+    json,
+    type LinksFunction,
+    type LoaderFunctionArgs,
+} from '@remix-run/node';
 import {
     Form,
     Links,
@@ -19,17 +22,12 @@ export const links: LinksFunction = () => [
     { rel: 'stylesheet', href: appStylesHref },
 ];
 
-const query = qs.stringify({
-    pagination: {
-        pageSize: 50,
-        page: 1,
-    },
-});
+export async function loader({ request }: LoaderFunctionArgs) {
+    const url = new URL(request.url);
+    const q = url.searchParams.get('q');
+    const contacts = await getContacts(q);
 
-export async function loader() {
-    const contacts = await getContacts(query);
-
-    return json(contacts);
+    return json({ contacts, q });
 }
 
 export function ErrorBoundary() {
@@ -58,7 +56,7 @@ export function ErrorBoundary() {
 }
 
 export default function App() {
-    const contacts = useLoaderData<typeof loader>();
+    const { contacts, q } = useLoaderData<typeof loader>();
 
     return (
         <html lang="en">
@@ -82,6 +80,7 @@ export default function App() {
                                 placeholder="Search"
                                 type="search"
                                 name="q"
+                                defaultValue={q || ''}
                             />
                             <div
                                 id="search-spinner"

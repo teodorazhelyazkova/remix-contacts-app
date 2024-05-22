@@ -1,3 +1,4 @@
+import qs from 'qs';
 import { STRAPI_URL } from './utils/constants';
 import { flattenContactsAttributes } from './utils/flattenContactsAttributes';
 
@@ -16,7 +17,21 @@ export type ContactRecord = ContactMutation & {
     createdAt: string;
 };
 
-export async function getContacts(query?: string | null) {
+export async function getContacts(q?: string | null) {
+    const query = qs.stringify({
+        filters: {
+            $or: [
+                { first: { $contains: q } },
+                { last: { $contains: q } },
+                { twitter: { $contains: q } },
+            ],
+        },
+        pagination: {
+            pageSize: 50,
+            page: 1,
+        },
+    });
+
     try {
         const response = await fetch(STRAPI_URL + '/api/contacts?' + query);
         const data = await response.json();

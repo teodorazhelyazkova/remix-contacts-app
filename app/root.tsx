@@ -1,4 +1,5 @@
 import { json, type LinksFunction } from '@remix-run/node';
+import qs from 'qs';
 import {
     Form,
     Links,
@@ -18,8 +19,15 @@ export const links: LinksFunction = () => [
     { rel: 'stylesheet', href: appStylesHref },
 ];
 
+const query = qs.stringify({
+    pagination: {
+        pageSize: 50,
+        page: 1,
+    },
+});
+
 export async function loader() {
-    const contacts = await getContacts();
+    const contacts = await getContacts(query);
 
     return json(contacts);
 }

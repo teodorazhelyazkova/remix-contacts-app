@@ -1,4 +1,4 @@
-import { useNavigate, useActionData, Form } from '@remix-run/react';
+import { useNavigate, useActionData, Form, Link } from '@remix-run/react';
 import { type ActionFunctionArgs, json, redirect } from '@remix-run/node';
 import z from 'zod';
 import { createContact } from '~/data.server';
@@ -34,7 +34,6 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function CreateContact() {
-    const navigate = useNavigate();
     const formData = useActionData<typeof action>();
 
     return (
@@ -83,9 +82,9 @@ export default function CreateContact() {
                 <button className="buttonLink" type="submit">
                     Create
                 </button>
-                <button className="buttonLink" onClick={() => navigate(-1)}>
+                <Link to="/contacts" className="buttonLink">
                     Cancel
-                </button>
+                </Link>
             </div>
         </Form>
     );

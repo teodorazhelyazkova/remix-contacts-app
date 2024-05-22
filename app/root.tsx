@@ -42,14 +42,13 @@ export function ErrorBoundary() {
                 <Links />
             </head>
             <body className="root-error">
-                <h1>Oops, it is game over.</h1>
-                <p>
+                <h1>
                     {isRouteErrorResponse(error)
                         ? `${error.status} ${error.statusText}`
                         : error instanceof Error
                         ? error.message
                         : 'Unknown Error'}
-                </p>
+                </h1>
                 <Scripts />
             </body>
         </html>

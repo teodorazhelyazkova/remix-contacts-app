@@ -42,6 +42,7 @@ export async function getContacts(q?: string | null) {
         return flattenContactsAttributesData;
     } catch (error) {
         console.log(error);
+        throw new Error('Oh no! Something went wrong');
     }
 }
 
@@ -62,6 +63,7 @@ export async function createContact(data: any) {
         return flattenContactsAttributesData;
     } catch (error) {
         console.log(error);
+        throw new Error('Oh no! Something went wrong');
     }
 }
 
@@ -76,6 +78,7 @@ export async function getContact(id: string) {
         return flattenContactsAttributesData;
     } catch (error) {
         console.log(error);
+        throw new Error('Oh no! Something went wrong');
     }
 }
 
@@ -96,6 +99,7 @@ export async function updateContactById(id: string, updates: ContactMutation) {
         return flattenContactsAttributesData;
     } catch (error) {
         console.log(error);
+        throw new Error('Oh no! Something went wrong');
     }
 }
 
@@ -112,5 +116,6 @@ export async function deleteContact(id: string) {
         return flattenContactsAttributesData;
     } catch (error) {
         console.log(error);
+        throw new Error('Oh no! Something went wrong');
     }
 }

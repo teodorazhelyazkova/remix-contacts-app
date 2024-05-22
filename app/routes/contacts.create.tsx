@@ -1,4 +1,4 @@
-import { useNavigate, useActionData, Form, Link } from '@remix-run/react';
+import { useActionData, Form, Link } from '@remix-run/react';
 import { type ActionFunctionArgs, json, redirect } from '@remix-run/node';
 import z from 'zod';
 import { createContact } from '~/data.server';

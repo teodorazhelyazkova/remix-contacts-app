@@ -17,6 +17,12 @@ export type ContactRecord = ContactMutation & {
     createdAt: string;
 };
 
+function strapiHeaders() {
+    return {
+        Authorization: `Bearer ${process.env.STRAPI_TOKEN!}`,
+    };
+}
+
 export async function getContacts(q?: string | null) {
     const query = qs.stringify({
         filters: {
@@ -33,10 +39,12 @@ export async function getContacts(q?: string | null) {
     });
 
     try {
-        const response = await fetch(STRAPI_URL + '/api/contacts?' + query);
+        const response = await fetch(STRAPI_URL + '/api/contacts?' + query, {
+            headers: strapiHeaders(),
+        });
         const data = await response.json();
         const flattenContactsAttributesData = flattenContactsAttributes(
-            data.data
+            data.data,
         );
 
         return flattenContactsAttributesData;
@@ -52,12 +60,13 @@ export async function createContact(data: any) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                ...strapiHeaders(),
             },
             body: JSON.stringify({ data: { ...data } }),
         });
         const responseData = await response.json();
         const flattenContactsAttributesData = flattenContactsAttributes(
-            responseData.data
+            responseData.data,
         );
 
         return flattenContactsAttributesData;
@@ -69,10 +78,12 @@ export async function createContact(data: any) {
 
 export async function getContact(id: string) {
     try {
-        const response = await fetch(STRAPI_URL + '/api/contacts/' + id);
+        const response = await fetch(STRAPI_URL + '/api/contacts/' + id, {
+            headers: strapiHeaders(),
+        });
         const data = await response.json();
         const flattenContactsAttributesData = flattenContactsAttributes(
-            data.data
+            data.data,
         );
 
         return flattenContactsAttributesData;
@@ -88,12 +99,13 @@ export async function updateContactById(id: string, updates: ContactMutation) {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                ...strapiHeaders(),
             },
             body: JSON.stringify({ data: { ...updates } }),
         });
         const responseData = await response.json();
         const flattenContactsAttributesData = flattenContactsAttributes(
-            responseData.data
+            responseData.data,
         );
 
         return flattenContactsAttributesData;
@@ -107,10 +119,11 @@ export async function deleteContact(id: string) {
     try {
         const response = await fetch(STRAPI_URL + '/api/contacts/' + id, {
             method: 'DELETE',
+            headers: strapiHeaders(),
         });
         const data = await response.json();
         const flattenContactsAttributesData = flattenContactsAttributes(
-            data.data
+            data.data,
         );
 
         return flattenContactsAttributesData;

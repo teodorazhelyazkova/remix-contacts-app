@@ -16,7 +16,7 @@ import {
     isRouteErrorResponse,
     NavLink,
 } from '@remix-run/react';
-import appStylesHref from './app.css';
+import appStylesHref from './app.css?url';
 import { getContacts } from './data.server';
 
 export const links: LinksFunction = () => [
@@ -46,8 +46,8 @@ export function ErrorBoundary() {
                     {isRouteErrorResponse(error)
                         ? `${error.status} ${error.statusText}`
                         : error instanceof Error
-                        ? error.message
-                        : 'Unknown Error'}
+                          ? error.message
+                          : 'Unknown Error'}
                 </h1>
                 <Scripts />
             </body>

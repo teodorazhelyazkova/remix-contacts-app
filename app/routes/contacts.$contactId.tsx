@@ -6,7 +6,7 @@ import {
     useRouteError,
     useFetcher,
 } from '@remix-run/react';
-import type { FunctionComponent } from 'react';
+import { useMemo, type FunctionComponent } from 'react';
 import {
     getContact,
     updateContactById,
@@ -128,9 +128,14 @@ export default function Contact() {
 const Favorite: FunctionComponent<{
     contact: Pick<ContactRecord, 'favorite'>;
 }> = ({ contact }) => {
-    const favorite = contact.favorite;
     const fetcher = useFetcher();
-
+    const favorite = useMemo(
+        () =>
+            fetcher.formData
+                ? fetcher.formData.get('favorite') === 'true'
+                : contact.favorite,
+        [fetcher.formData, contact.favorite],
+    );
     return (
         <fetcher.Form method="post">
             <button

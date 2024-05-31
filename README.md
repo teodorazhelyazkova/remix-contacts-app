@@ -1,38 +1,34 @@
-# Welcome to Remix!
+# Setup
 
-- [Remix Docs](https://remix.run/docs)
+## Front-end Remix Contacts App 
 
-## Development
+Install dependencies with Node.js v14.18.3
 
-From your terminal:
+```sh
+npm install
+```
+
+Start the dev server
 
 ```sh
 npm run dev
 ```
 
-This starts your app in development mode, rebuilding assets on file changes.
+This starts the application in development mode and it will be available at `http://localhost:5173/`
 
-## Deployment
+## Back-end Strapi Contacts App
 
-First, build your app for production:
-
-```sh
-npm run build
-```
-
-Then run the app in production mode:
+Install Strapi one folder above the front-end app
 
 ```sh
-npm start
+npx create-strapi-app@latest strapi-contacts-app --quickstart
 ```
+Start the server
 
-Now you'll need to pick a host to deploy it to.
+```sh
+npm run develop
+```
+To manage your project 🚀, go to the administration panel at `http://localhost:1337/admin` and create your first Admin user
 
-### DIY
-
-If you're familiar with deploying node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `remix build`
-
-- `build/server`
-- `build/client`
+To access the server ⚡️, go to:
+`http://localhost:1337`

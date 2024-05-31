@@ -1,20 +1,14 @@
 import { useActionData, Form, Link } from '@remix-run/react';
 import { type ActionFunctionArgs, json, redirect } from '@remix-run/node';
-import z from 'zod';
 import { createContact } from '~/data.server';
+import { contactSchema } from '~/validation/schemas/contact';
+import { FormInput } from '~/components/FormInput';
 
 export async function action({ request }: ActionFunctionArgs) {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
 
-    const formSchema = z.object({
-        avatar: z.string().url().min(2),
-        first: z.string().min(2),
-        last: z.string().min(2),
-        twitter: z.string().min(2),
-    });
-
-    const validatedFields = formSchema.safeParse({
+    const validatedFields = contactSchema.safeParse({
         avatar: data.avatar,
         first: data.first,
         last: data.last,
@@ -87,46 +81,5 @@ export default function CreateContact() {
                 </Link>
             </div>
         </Form>
-    );
-}
-
-function FormInput({
-    type,
-    name,
-    label,
-    placeholder,
-    defaultValue = '',
-    errors,
-}: Readonly<{
-    type: string;
-    name: string;
-    label?: string;
-    placeholder?: string;
-    errors: any;
-    defaultValue?: string;
-}>) {
-    return (
-        <div className="input-field">
-            <div>
-                <label htmlFor={name}>{label}</label>
-                <div>
-                    <input
-                        name={name}
-                        type={type}
-                        placeholder={placeholder}
-                        defaultValue={defaultValue}
-                    />
-                </div>
-            </div>
-            <ul>
-                {errors && errors[name]
-                    ? errors[name].map((error: string) => (
-                          <li key={error} className="input-error">
-                              {error}
-                          </li>
-                      ))
-                    : null}
-            </ul>
-        </div>
     );
 }

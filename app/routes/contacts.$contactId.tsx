@@ -5,18 +5,14 @@ import {
     useLoaderData,
     useRouteError,
 } from '@remix-run/react';
-import type { FunctionComponent } from 'react';
-import {
-    getContact,
-    updateContactById,
-    type ContactRecord,
-} from '../data.server';
+import { getContact, updateContactById } from '../data.server';
 import {
     type ActionFunctionArgs,
     json,
     type LoaderFunctionArgs,
 } from '@remix-run/node';
 import invariant from 'tiny-invariant';
+import { Favorite } from '~/components/Favorite';
 
 export async function loader({ params }: LoaderFunctionArgs) {
     invariant(params.contactId, 'Missing contactId param');
@@ -107,7 +103,7 @@ export default function Contact() {
                         method="post"
                         onSubmit={(event) => {
                             const response = confirm(
-                                'Please confirm you want to delete this record.'
+                                'Please confirm you want to delete this record.',
                             );
                             if (!response) {
                                 event.preventDefault();
@@ -123,24 +119,3 @@ export default function Contact() {
         </div>
     );
 }
-
-const Favorite: FunctionComponent<{
-    contact: Pick<ContactRecord, 'favorite'>;
-}> = ({ contact }) => {
-    const favorite = contact.favorite;
-
-    return (
-        <Form method="post">
-            <button
-                className="buttonLink"
-                aria-label={
-                    favorite ? 'Remove from favorites' : 'Add to favorites'
-                }
-                name="favorite"
-                value={favorite ? 'false' : 'true'}
-            >
-                {favorite ? '★' : '☆'}
-            </button>
-        </Form>
-    );
-};

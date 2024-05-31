@@ -15,9 +15,12 @@ import {
     useRouteError,
     isRouteErrorResponse,
     NavLink,
+    useSubmit,
+    useNavigation,
 } from '@remix-run/react';
 import appStylesHref from './app.css?url';
 import { getContacts } from './data.server';
+import { FormEvent, useCallback, useEffect, useMemo } from 'react';
 
 export const links: LinksFunction = () => [
     { rel: 'stylesheet', href: appStylesHref },
@@ -46,8 +49,8 @@ export function ErrorBoundary() {
                     {isRouteErrorResponse(error)
                         ? `${error.status} ${error.statusText}`
                         : error instanceof Error
-                          ? error.message
-                          : 'Unknown Error'}
+                        ? error.message
+                        : 'Unknown Error'}
                 </h1>
                 <Scripts />
             </body>
@@ -57,6 +60,32 @@ export function ErrorBoundary() {
 
 export default function App() {
     const { contacts, q } = useLoaderData<typeof loader>();
+    const submit = useSubmit();
+    const navigation = useNavigation();
+
+    const handleSearchFormChange = useCallback(
+        (e: FormEvent<HTMLFormElement>) => {
+            const isFirstSearch = q === null;
+
+            submit(e.currentTarget, { replace: !isFirstSearch });
+        },
+        [q, submit],
+    );
+
+    const searching = useMemo(
+        () =>
+            navigation.location &&
+            new URLSearchParams(navigation.location.search).has('q'),
+        [navigation.location],
+    );
+
+    useEffect(() => {
+        const searchField = document.getElementById('q');
+
+        if (searchField instanceof HTMLInputElement) {
+            searchField.value = q || '';
+        }
+    }, [q]);
 
     return (
         <html lang="en">
@@ -73,14 +102,24 @@ export default function App() {
                 <div id="sidebar">
                     <h1>Remix Contacts</h1>
                     <div>
-                        <Form id="search-form" role="search">
+                        <Form
+                            id="search-form"
+                            role="search"
+                            onChange={handleSearchFormChange}
+                        >
                             <input
                                 id="q"
+                                className={searching ? 'loading' : ''}
                                 aria-label="Search contacts"
                                 placeholder="Search"
                                 type="search"
                                 name="q"
                                 defaultValue={q || ''}
+                            />
+                            <div
+                                id="search-spinner"
+                                aria-hidden
+                                hidden={!searching}
                             />
                         </Form>
                         <Form method="post">
@@ -96,8 +135,15 @@ export default function App() {
                                     <li key={contact.id}>
                                         <NavLink
                                             to={`contacts/${contact.id}`}
-                                            className={({ isActive }) =>
-                                                isActive ? 'active' : ''
+                                            className={({
+                                                isActive,
+                                                isPending,
+                                            }) =>
+                                                isActive
+                                                    ? 'active'
+                                                    : isPending
+                                                    ? 'pending'
+                                                    : ''
                                             }
                                         >
                                             {contact.first || contact.last ? (
@@ -123,7 +169,10 @@ export default function App() {
                     </nav>
                 </div>
 
-                <div id="detail">
+                <div
+                    id="detail"
+                    className={navigation.state === 'loading' ? 'loading' : ''}
+                >
                     <Outlet />
                 </div>
 

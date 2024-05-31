@@ -219,6 +219,11 @@ i {
     padding: 2rem 4rem;
     width: 100%;
 }
+#detail.loading {
+    opacity: 0.25;
+    transition: opacity 200ms;
+    transition-delay: 200ms;
+}
 #contact {
     max-width: 40rem;
     display: flex;

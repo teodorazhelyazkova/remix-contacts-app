@@ -4,20 +4,15 @@ import {
     isRouteErrorResponse,
     useLoaderData,
     useRouteError,
-    useFetcher,
 } from '@remix-run/react';
-import { useMemo, type FunctionComponent } from 'react';
-import {
-    getContact,
-    updateContactById,
-    type ContactRecord,
-} from '../data.server';
+import { getContact, updateContactById } from '../data.server';
 import {
     type ActionFunctionArgs,
     json,
     type LoaderFunctionArgs,
 } from '@remix-run/node';
 import invariant from 'tiny-invariant';
+import { Favorite } from '~/components/Favorite';
 
 export async function loader({ params }: LoaderFunctionArgs) {
     invariant(params.contactId, 'Missing contactId param');
@@ -124,30 +119,3 @@ export default function Contact() {
         </div>
     );
 }
-
-const Favorite: FunctionComponent<{
-    contact: Pick<ContactRecord, 'favorite'>;
-}> = ({ contact }) => {
-    const fetcher = useFetcher();
-    const favorite = useMemo(
-        () =>
-            fetcher.formData
-                ? fetcher.formData.get('favorite') === 'true'
-                : contact.favorite,
-        [fetcher.formData, contact.favorite],
-    );
-    return (
-        <fetcher.Form method="post">
-            <button
-                className="buttonLink"
-                aria-label={
-                    favorite ? 'Remove from favorites' : 'Add to favorites'
-                }
-                name="favorite"
-                value={favorite ? 'false' : 'true'}
-            >
-                {favorite ? '★' : '☆'}
-            </button>
-        </fetcher.Form>
-    );
-};

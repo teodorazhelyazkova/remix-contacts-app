@@ -4,6 +4,7 @@ import {
     isRouteErrorResponse,
     useLoaderData,
     useRouteError,
+    useFetcher,
 } from '@remix-run/react';
 import type { FunctionComponent } from 'react';
 import {
@@ -107,7 +108,7 @@ export default function Contact() {
                         method="post"
                         onSubmit={(event) => {
                             const response = confirm(
-                                'Please confirm you want to delete this record.'
+                                'Please confirm you want to delete this record.',
                             );
                             if (!response) {
                                 event.preventDefault();
@@ -128,9 +129,10 @@ const Favorite: FunctionComponent<{
     contact: Pick<ContactRecord, 'favorite'>;
 }> = ({ contact }) => {
     const favorite = contact.favorite;
+    const fetcher = useFetcher();
 
     return (
-        <Form method="post">
+        <fetcher.Form method="post">
             <button
                 className="buttonLink"
                 aria-label={
@@ -141,6 +143,6 @@ const Favorite: FunctionComponent<{
             >
                 {favorite ? '★' : '☆'}
             </button>
-        </Form>
+        </fetcher.Form>
     );
 };

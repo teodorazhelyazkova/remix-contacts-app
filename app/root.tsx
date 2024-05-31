@@ -16,10 +16,11 @@ import {
     isRouteErrorResponse,
     NavLink,
     useSubmit,
+    useNavigation,
 } from '@remix-run/react';
 import appStylesHref from './app.css?url';
 import { getContacts } from './data.server';
-import { FormEvent, useCallback, useEffect } from 'react';
+import { FormEvent, useCallback, useEffect, useMemo } from 'react';
 
 export const links: LinksFunction = () => [
     { rel: 'stylesheet', href: appStylesHref },
@@ -60,11 +61,22 @@ export function ErrorBoundary() {
 export default function App() {
     const { contacts, q } = useLoaderData<typeof loader>();
     const submit = useSubmit();
+    const navigation = useNavigation();
+
     const handleSearchFormChange = useCallback(
         (e: FormEvent<HTMLFormElement>) => {
-            submit(e.currentTarget);
+            const isFirstSearch = q === null;
+
+            submit(e.currentTarget, { replace: !isFirstSearch });
         },
-        [submit],
+        [q, submit],
+    );
+
+    const searching = useMemo(
+        () =>
+            navigation.location &&
+            new URLSearchParams(navigation.location.search).has('q'),
+        [navigation.location],
     );
 
     useEffect(() => {
@@ -97,11 +109,17 @@ export default function App() {
                         >
                             <input
                                 id="q"
+                                className={searching ? 'loading' : ''}
                                 aria-label="Search contacts"
                                 placeholder="Search"
                                 type="search"
                                 name="q"
                                 defaultValue={q || ''}
+                            />
+                            <div
+                                id="search-spinner"
+                                aria-hidden
+                                hidden={!searching}
                             />
                         </Form>
                         <Form method="post">

@@ -15,10 +15,11 @@ import {
     useRouteError,
     isRouteErrorResponse,
     NavLink,
+    useSubmit,
 } from '@remix-run/react';
 import appStylesHref from './app.css?url';
 import { getContacts } from './data.server';
-import { useEffect } from 'react';
+import { FormEvent, useCallback, useEffect } from 'react';
 
 export const links: LinksFunction = () => [
     { rel: 'stylesheet', href: appStylesHref },
@@ -58,6 +59,13 @@ export function ErrorBoundary() {
 
 export default function App() {
     const { contacts, q } = useLoaderData<typeof loader>();
+    const submit = useSubmit();
+    const handleSearchFormChange = useCallback(
+        (e: FormEvent<HTMLFormElement>) => {
+            submit(e.currentTarget);
+        },
+        [submit],
+    );
 
     useEffect(() => {
         const searchField = document.getElementById('q');
@@ -82,7 +90,11 @@ export default function App() {
                 <div id="sidebar">
                     <h1>Remix Contacts</h1>
                     <div>
-                        <Form id="search-form" role="search">
+                        <Form
+                            id="search-form"
+                            role="search"
+                            onChange={handleSearchFormChange}
+                        >
                             <input
                                 id="q"
                                 aria-label="Search contacts"

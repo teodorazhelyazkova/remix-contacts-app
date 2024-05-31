@@ -18,6 +18,7 @@ import {
 } from '@remix-run/react';
 import appStylesHref from './app.css?url';
 import { getContacts } from './data.server';
+import { useEffect } from 'react';
 
 export const links: LinksFunction = () => [
     { rel: 'stylesheet', href: appStylesHref },
@@ -46,8 +47,8 @@ export function ErrorBoundary() {
                     {isRouteErrorResponse(error)
                         ? `${error.status} ${error.statusText}`
                         : error instanceof Error
-                          ? error.message
-                          : 'Unknown Error'}
+                        ? error.message
+                        : 'Unknown Error'}
                 </h1>
                 <Scripts />
             </body>
@@ -57,6 +58,14 @@ export function ErrorBoundary() {
 
 export default function App() {
     const { contacts, q } = useLoaderData<typeof loader>();
+
+    useEffect(() => {
+        const searchField = document.getElementById('q');
+
+        if (searchField instanceof HTMLInputElement) {
+            searchField.value = q || '';
+        }
+    }, [q]);
 
     return (
         <html lang="en">

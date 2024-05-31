@@ -135,8 +135,15 @@ export default function App() {
                                     <li key={contact.id}>
                                         <NavLink
                                             to={`contacts/${contact.id}`}
-                                            className={({ isActive }) =>
-                                                isActive ? 'active' : ''
+                                            className={({
+                                                isActive,
+                                                isPending,
+                                            }) =>
+                                                isActive
+                                                    ? 'active'
+                                                    : isPending
+                                                    ? 'pending'
+                                                    : ''
                                             }
                                         >
                                             {contact.first || contact.last ? (

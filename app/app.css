@@ -199,6 +199,21 @@ i {
     background: hsl(224, 98%, 58%);
     color: white;
 }
+#sidebar nav a.pending {
+    animation: progress 2s infinite ease-in-out;
+    animation-delay: 200ms;
+}
+@keyframes progress {
+    0% {
+        background: #e3e3e3;
+    }
+    50% {
+        background: hsla(224, 98%, 58%, 0.5);
+    }
+    100% {
+        background: #e3e3e3;
+    }
+}
 #detail {
     flex: 1;
     padding: 2rem 4rem;
